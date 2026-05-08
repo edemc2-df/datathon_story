@@ -279,6 +279,7 @@ def inject_css() -> None:
                 font-family: Georgia, "Times New Roman", serif;
                 font-size: 2rem;
                 font-weight: 700;
+                color: #0E5D78 !important;
                 white-space: nowrap;
             }}
 
@@ -287,9 +288,17 @@ def inject_css() -> None:
                 border-color: rgba(254,46,52,0.22);
             }}
 
+            .risk-high .risk-score {{
+                color: #B5121A !important;
+            }}
+
             .risk-mid {{
                 background: rgba(253,194,11,0.16);
                 border-color: rgba(253,194,11,0.28);
+            }}
+
+            .risk-mid .risk-score {{
+                color: #7A5700 !important;
             }}
 
             .risk-low {{
@@ -312,14 +321,14 @@ def inject_css() -> None:
                 background: rgba(255, 255, 255, 0.78);
                 border: 1px solid var(--border);
                 border-radius: 18px;
-                padding: 0.95rem 1rem;
+                padding: 0.85rem 1rem;
                 box-shadow: 0 12px 24px rgba(27, 125, 161, 0.06);
                 min-height: 100%;
             }}
 
             [data-testid="stMetricLabel"] p {{
                 color: var(--muted) !important;
-                font-size: 0.9rem;
+                font-size: 0.82rem;
                 font-weight: 600;
             }}
 
@@ -329,8 +338,13 @@ def inject_css() -> None:
                 color: var(--ink) !important;
                 font-family: Georgia, "Times New Roman", serif;
                 font-weight: 700;
-                font-size: clamp(1.15rem, 1.5vw, 1.7rem) !important;
-                line-height: 1.15 !important;
+                font-size: clamp(0.98rem, 1.05vw, 1.18rem) !important;
+                line-height: 1.18 !important;
+                max-width: 100%;
+                overflow: visible !important;
+                overflow-wrap: anywhere;
+                text-overflow: clip !important;
+                white-space: normal !important;
             }}
 
             [data-testid="stMetricDelta"] {{
