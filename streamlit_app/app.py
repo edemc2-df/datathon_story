@@ -30,46 +30,46 @@ PALETTE = {
 
 FEATURE_META: Dict[str, Dict[str, str]] = {
     "IDA": {
-        "label": "Desempenho academico",
-        "help": "Qualidade do desempenho escolar observado pela associacao.",
-        "reading": "Indica o nivel de consistencia academica do aluno no ciclo atual.",
-        "action": "Acionar reforco focalizado, metas de recuperacao e acompanhamento por componente.",
+        "label": "Desempenho acadêmico",
+        "help": "Qualidade do desempenho escolar observado pela associação.",
+        "reading": "Indica o nível de consistência acadêmica do aluno no ciclo atual.",
+        "action": "Acionar reforço focalizado, metas de recuperação e acompanhamento por componente.",
     },
     "IEG": {
         "label": "Engajamento",
-        "help": "Participacao, presenca e adesao do aluno nas atividades.",
-        "reading": "No storytelling, caminha junto com desempenho e ponto de virada.",
-        "action": "Priorizar plano de engajamento com rotina, mentoria e combinados de participacao.",
+        "help": "Participação, presença e adesão do aluno nas atividades.",
+        "reading": "Caminha junto com desempenho e ponto de virada.",
+        "action": "Priorizar plano de engajamento com rotina, mentoria e combinados de participação.",
     },
     "IPS": {
         "label": "Psicossocial",
-        "help": "Termometro socioemocional e de vulnerabilidades do aluno.",
-        "reading": "No notebook, aparece como mecanismo de early warning para quedas futuras.",
-        "action": "Ampliar escuta e suporte preventivo para evitar perda de tracao no ciclo seguinte.",
+        "help": "Termômetro socioemocional e de vulnerabilidades do aluno.",
+        "reading": "Funciona como alerta preventivo para quedas futuras.",
+        "action": "Ampliar escuta e suporte preventivo para evitar perda de tração no ciclo seguinte.",
     },
     "IPP": {
-        "label": "Psicopedagogico",
-        "help": "Leitura psicopedagogica do potencial e das barreiras de aprendizagem.",
-        "reading": "Foi apontado como principal motor do ponto de virada no storytelling.",
-        "action": "Conectar equipe pedagogica e psicopedagogica para destravar potencial latente.",
+        "label": "Psicopedagógico",
+        "help": "Leitura psicopedagógica do potencial e das barreiras de aprendizagem.",
+        "reading": "Foi apontado como principal motor do ponto de virada.",
+        "action": "Conectar equipe pedagógica e psicopedagógica para destravar potencial latente.",
     },
     "IAN": {
-        "label": "Adequacao de nivel",
-        "help": "Aderencia do aluno a fase esperada para a idade.",
-        "reading": "Contextualiza defasagem, mas nao explica sozinho o potencial do aluno.",
-        "action": "Usar para revisar trilha e ritmo, sem reduzir a leitura do caso a serie/idade.",
+        "label": "Adequação de nível",
+        "help": "Aderência do aluno à fase esperada para a idade.",
+        "reading": "Contextualiza defasagem, mas não explica sozinho o potencial do aluno.",
+        "action": "Usar para revisar trilha e ritmo, sem reduzir a leitura do caso à série/idade.",
     },
     "IPV": {
         "label": "Ponto de virada",
-        "help": "Sinal de transformacao e mudanca positiva na trajetoria.",
-        "reading": "Relaciona esforco, estrutura cognitiva e suporte recebido.",
+        "help": "Sinal de transformação e mudança positiva na trajetória.",
+        "reading": "Relaciona esforço, estrutura cognitiva e suporte recebido.",
         "action": "Consolidar marcos de curto prazo e garantir continuidade do acompanhamento.",
     },
     "IAA": {
-        "label": "Autoavaliacao",
-        "help": "Percepcao do aluno sobre o proprio desempenho.",
-        "reading": "No notebook, mostrou baixa aderencia a realidade academica medida.",
-        "action": "Usar como insumo de conversa, nao como proxy de performance real.",
+        "label": "Autoavaliação",
+        "help": "Percepção do aluno sobre o próprio desempenho.",
+        "reading": "Ajuda a entender a visão do aluno, mas pode superestimar a realidade acadêmica.",
+        "action": "Usar como insumo de conversa, não como substituto de performance real.",
     },
 }
 
@@ -81,7 +81,7 @@ STONE_COLORS = {
 }
 
 NOTEBOOK_MODEL_STORY = {
-    "modelo_destacado": "Regressao Logistica",
+    "modelo_destacado": "Regressão Logística",
     "auc": "0,85",
     "recall_risco": "76%",
     "tradeoff": "Priorizou alerta precoce e cobertura dos casos em risco.",
@@ -89,8 +89,8 @@ NOTEBOOK_MODEL_STORY = {
 
 
 st.set_page_config(
-    page_title="Passos Magicos | Storytelling + Early Warning",
-    page_icon="📘",
+    page_title="Passos Mágicos | Painel Preditivo",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -451,7 +451,7 @@ def load_model_features(_model) -> List[str]:
         loaded = joblib.load(FEATURES_PATH)
         return [str(item) for item in loaded]
 
-    raise FileNotFoundError("Nao foi possivel inferir as features do modelo nem localizar features.pkl.")
+    raise FileNotFoundError("Não foi possível inferir os indicadores esperados pelo modelo.")
 
 
 def clean_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -655,22 +655,22 @@ def predict_risk(model, features: List[str], values: Dict[str, float]) -> Tuple[
 
 
 def classify_risk(probability: float) -> Dict[str, str]:
-    if probability >= 0.60:
+    if probability >= 0.70:
         return {
             "label": "Prioridade imediata",
             "tone": "risk-high",
-            "message": "A leitura indica risco alto em um desenho de alerta precoce. Vale tratar o caso como prioridade de intervencao.",
+            "message": "O aluno apresenta combinação de sinais que pedem atuação rápida da equipe pedagógica e monitoramento próximo.",
         }
-    if probability >= 0.35:
+    if probability >= 0.40:
         return {
-            "label": "Monitoramento reforcado",
+            "label": "Atenção dirigida",
             "tone": "risk-mid",
-            "message": "Ha sinais consistentes de atencao. O caso merece acompanhamento mais proximo e plano de resposta.",
+            "message": "Há sinais relevantes de atenção. O caso pede plano de acompanhamento com foco nos pilares que mais deslocam o risco.",
         }
     return {
-        "label": "Estavel no momento",
+        "label": "Estável com monitoramento",
         "tone": "risk-low",
-        "message": "O perfil aparece mais protegido no ciclo atual, mas ainda deve ser acompanhado em logica preventiva.",
+        "message": "O perfil está mais protegido no cenário atual, mas vale acompanhar a consistência dos indicadores ao longo dos próximos ciclos.",
     }
 
 
@@ -687,7 +687,7 @@ def build_priority_table(
         q25 = float(benchmarks.loc[feature, "q25"])
         weight = float(signal_weights.get(feature, 0.0))
         gap = max(median - current, 0.0)
-        status = "Critico" if current < q25 else "Abaixo da mediana" if current < median else "Acima da mediana"
+        status = "Crítico" if current < q25 else "Abaixo da mediana" if current < median else "Acima da mediana"
         rows.append(
             {
                 "Feature": feature,
@@ -745,12 +745,12 @@ def build_scenarios(
                 "Indicador": feature_label(feature),
                 "Valor alvo": scenario[feature],
                 "Risco projetado": new_probability,
-                "Reducao potencial": max(base_probability - new_probability, 0.0),
+                "Redução potencial": max(base_probability - new_probability, 0.0),
             }
         )
 
     scenario_df = pd.DataFrame(rows).sort_values(
-        ["Reducao potencial", "Risco projetado"], ascending=[False, True]
+        ["Redução potencial", "Risco projetado"], ascending=[False, True]
     )
 
     combined = dict(input_values)
@@ -771,8 +771,8 @@ def build_recommendations(priority_df: pd.DataFrame) -> List[Tuple[str, str]]:
 
     return [
         (
-            "Manter consistencia do caso",
-            "Os principais indicadores estao em linha com a mediana da base. O foco aqui e preservar rotina, engajamento e continuidade da evolucao.",
+            "Manter consistência do caso",
+            "Os principais indicadores estão em linha com a mediana da base. O foco aqui é preservar rotina, engajamento e continuidade da evolução.",
         )
     ]
 
@@ -795,11 +795,11 @@ def build_case_summary(
 
     if combined_probability < base_probability:
         sentences.append(
-            f"Se os tres principais gaps chegarem ao menos ate a mediana da base, o risco projetado cai para {format_pct(combined_probability)}."
+            f"Se os três principais gaps chegarem ao menos até a mediana da base, o risco projetado cai para {format_pct(combined_probability)}."
         )
     else:
         sentences.append(
-            f"No cenario combinado, o risco projetado fica em {format_pct(combined_probability)}, entao a decisao deve considerar o contexto qualitativo do aluno."
+            f"No cenário combinado, o risco projetado fica em {format_pct(combined_probability)}, então a decisão deve considerar o contexto qualitativo do aluno."
         )
     return " ".join(sentences)
 
@@ -868,7 +868,7 @@ def get_early_warning_stats(df: pd.DataFrame) -> pd.DataFrame:
     return summary
 
 
-def plot_profile_comparison(features: List[str], input_values: Dict[str, float], benchmarks: pd.DataFrame):
+def plot_profile_benchmark(features: List[str], input_values: Dict[str, float], benchmarks: pd.DataFrame):
     labels = [feature_label(feature) for feature in features]
     base = benchmarks.loc[features, "mediana"].astype(float)
     current = pd.Series({feature: input_values[feature] for feature in features}, dtype="float64")
@@ -963,7 +963,7 @@ def plot_stone_shift(stone_summary: pd.DataFrame):
         bottom += pivot[stone]
 
     ax.set_ylim(0, 1)
-    ax.set_ylabel("Participacao na base")
+    ax.set_ylabel("Participação na base")
     ax.set_xlabel("Ano")
     ax.spines[["top", "right"]].set_visible(False)
     ax.legend(frameon=False, ncol=4, loc="upper center", bbox_to_anchor=(0.5, 1.15))
@@ -982,7 +982,7 @@ def plot_defasagem(defasagem_summary: pd.DataFrame):
     ax.set_xticks(list(positions))
     ax.set_xticklabels(defasagem_summary["ano_base"].astype(str).tolist())
     ax.set_ylim(0, max(0.5, float(defasagem_summary[["severa", "ideal", "avancado"]].max().max()) + 0.08))
-    ax.set_ylabel("Participacao")
+    ax.set_ylabel("Participação")
     ax.set_xlabel("Ano")
     ax.spines[["top", "right"]].set_visible(False)
     ax.legend(frameon=False)
@@ -1009,7 +1009,7 @@ inject_css()
 missing_files = [path for path in [WORKBOOK_PATH, MODEL_PATH] if not path.exists()]
 if missing_files:
     st.error(
-        "Nao foi possivel localizar todos os arquivos anexos necessarios no pacote do app.\n\n"
+        "Não foi possível localizar todos os dados necessários no pacote do app.\n\n"
         + "\n".join(str(path) for path in missing_files)
     )
     st.stop()
@@ -1019,7 +1019,7 @@ try:
     model_features = load_model_features(model)
     story_df = load_story_dataframe()
 except Exception as exc:
-    st.error(f"Falha ao carregar os anexos para o app storytelling. Detalhe tecnico: {exc}")
+    st.error(f"Falha ao carregar os dados do aplicativo. Detalhe técnico: {exc}")
     st.stop()
 
 signal_weights = get_model_signal(model, model_features)
@@ -1046,27 +1046,26 @@ st.markdown(
     <div class="hero">
         <div class="hero-grid">
             <div>
-                <span class="eyebrow">Storytelling analitico + app comparativo</span>
-                <h1>Painel de early warning com a narrativa do notebook storytelling</h1>
+                <span class="eyebrow">Datathon | Passos Mágicos</span>
+                <h1>Painel preditivo para triagem, priorização e ação pedagógica</h1>
                 <p>
-                    Esta versao foi criada para comparacao com o app atual. Ela usa a planilha
-                    <strong>BASE DE DADOS PEDE 2024 - DATATHON.xlsx</strong> e os achados do
-                    <strong>storytelling.ipynb</strong> para montar uma leitura mais executiva
-                    sobre risco, evolucao e impacto do programa.
+                    Aplicação desenhada para apoiar a Passos Mágicos na identificação precoce de risco,
+                    transformar indicadores em leitura gerencial e orientar intervenções com base em dados.
+                    O modelo combina a base histórica PEDE 2022-2024 com uma leitura preventiva do aluno.
                 </p>
             </div>
             <div class="hero-mini">
                 <div class="hero-mini-card">
-                    <span>Base tratada</span>
+                    <span>Base analisada</span>
                     <strong>{format_int(sample_size)} registros com INDE atual</strong>
                 </div>
                 <div class="hero-mini-card">
-                    <span>Artefato operacional</span>
+                    <span>Modelo preditivo</span>
                     <strong>{hero_model_name}</strong>
                 </div>
                 <div class="hero-mini-card">
-                    <span>Notebook storytelling</span>
-                    <strong>{NOTEBOOK_MODEL_STORY["modelo_destacado"]} como referencia de early warning</strong>
+                    <span>Leitura preventiva</span>
+                    <strong>{NOTEBOOK_MODEL_STORY["modelo_destacado"]} como referência analítica</strong>
                 </div>
             </div>
         </div>
@@ -1076,7 +1075,7 @@ st.markdown(
 )
 
 top_metrics = st.columns(4)
-top_metrics[0].metric("INDE medio em 2024", format_decimal(float(year_summary.loc[2024, "inde_atual"])))
+top_metrics[0].metric("INDE médio em 2024", format_decimal(float(year_summary.loc[2024, "inde_atual"])))
 top_metrics[1].metric(
     "Alto rendimento em 2024",
     format_pct(high_performance_share.get(2024, 0.0)),
@@ -1087,39 +1086,39 @@ top_metrics[2].metric(
     format_pct(float(defasagem_summary.loc[defasagem_summary['ano_base'] == 2024, 'severa'].iloc[0])),
     f"{format_pct(float(defasagem_summary.loc[defasagem_summary['ano_base'] == 2024, 'severa'].iloc[0] - defasagem_summary.loc[defasagem_summary['ano_base'] == 2022, 'severa'].iloc[0]))} vs 2022",
 )
-top_metrics[3].metric("Instituicoes mapeadas", format_int(institution_count))
+top_metrics[3].metric("Instituições mapeadas", format_int(institution_count))
 
 with st.sidebar:
-    st.markdown("### Arquivos usados")
-    st.write(f"- Planilha: `{WORKBOOK_PATH.name}`")
-    st.write(f"- Notebook: `storytelling.ipynb`")
-    st.write(f"- Modelo: `{MODEL_PATH.name}`")
-    st.write(f"- Features: `{FEATURES_PATH.name}`")
-    st.markdown("### Leitura deste app")
-    st.write("1. A aba de triagem usa o artefato operacional fornecido.")
-    st.write("2. As abas analiticas traduzem a narrativa do storytelling.")
-    st.write("3. O objetivo e comparar esta versao com o app atual sem sobrescrever nada.")
-    st.caption("Observacao: o notebook e o artefato operacional anexado nao sao identicos em desenho de features. Esta versao combina os dois de forma transparente.")
+    st.markdown("### Como usar")
+    st.write("1. Ajuste os indicadores disponíveis do aluno.")
+    st.write("2. Leia o risco previsto e os fatores que mais puxam o caso.")
+    st.write("3. Use as simulações para priorizar a intervenção pedagógica.")
+    st.write("4. Navegue pelas abas para ver o contexto analítico da base.")
+    st.markdown("### Faixas operacionais")
+    st.write("Até 39%: monitoramento.")
+    st.write("40% a 69%: atenção dirigida.")
+    st.write("70% ou mais: prioridade imediata.")
+    st.caption("Os resultados apoiam a decisão pedagógica, mas não substituem avaliação humana.")
 
 
 tab_triagem, tab_story, tab_governanca = st.tabs(
-    ["Triagem early warning", "Storytelling da base", "Modelo e comparacao"]
+    ["Triagem individual", "Insights da base", "Modelo e governança"]
 )
 
 
 with tab_triagem:
     st.subheader("Leitura individual com foco em alerta precoce")
     st.caption(
-        "Os controles abaixo usam o modelo carregado do arquivo anexado. A interpretacao e posicionada em logica preventiva."
+        "Os controles abaixo usam o modelo preditivo para apoiar uma interpretação preventiva do caso."
     )
 
     col_form, col_preview = st.columns([1.05, 0.95], gap="large")
 
     with col_form:
-        st.text_input("Aluno ou identificador", placeholder="Ex.: RA-245 ou codigo interno", key="story_student")
+        st.text_input("Aluno ou identificador", placeholder="Ex.: RA-245 ou código interno", key="story_student")
         st.selectbox(
             "Contexto de uso",
-            ["Triagem preventiva", "Reuniao de caso", "Monitoramento mensal"],
+            ["Triagem preventiva", "Reunião de caso", "Monitoramento mensal"],
             key="story_context",
         )
 
@@ -1137,7 +1136,7 @@ with tab_triagem:
                     help=feature_help(feature),
                 )
 
-        st.caption("Os valores default foram preenchidos com a mediana da base tratada do storytelling.")
+        st.caption("Os valores iniciais foram preenchidos com a mediana da base analisada.")
 
     prediction, probability = predict_risk(model, model_features, input_values)
     band = classify_risk(probability)
@@ -1150,15 +1149,15 @@ with tab_triagem:
     case_summary = build_case_summary(band, priority_df, strengths_df, probability, combined_probability)
 
     with col_preview:
-        benchmark_fig = plot_profile_comparison(model_features, input_values, benchmarks)
+        benchmark_fig = plot_profile_benchmark(model_features, input_values, benchmarks)
         st.pyplot(benchmark_fig, use_container_width=True)
         plt.close(benchmark_fig)
 
         below_median = int((priority_df["Gap"] > 0).sum())
         strongest_gap = priority_df.iloc[0]["Indicador"]
         render_soft_card(
-            "Resumo instantaneo",
-            f"{below_median} de {len(model_features)} indicadores estao abaixo da mediana. O maior gap atual aparece em {strongest_gap}.",
+            "Resumo instantâneo",
+            f"{below_median} de {len(model_features)} indicadores estão abaixo da mediana. O maior gap atual aparece em {strongest_gap}.",
         )
 
     st.markdown(
@@ -1180,12 +1179,12 @@ with tab_triagem:
     result_cols[0].metric("Classe prevista", "Risco" if prediction == 1 else "Baixo risco")
     result_cols[1].metric("Abaixo da mediana", f"{below_median}/{len(model_features)}")
     result_cols[2].metric(
-        "Melhor cenario isolado",
+        "Melhor cenário isolado",
         format_pct(float(scenario_df.iloc[0]["Risco projetado"])),
-        f"-{format_pct(float(scenario_df.iloc[0]['Reducao potencial']))}",
+        f"-{format_pct(float(scenario_df.iloc[0]['Redução potencial']))}",
     )
     result_cols[3].metric(
-        "Cenario combinado",
+        "Cenário combinado",
         format_pct(combined_probability),
         f"-{format_pct(max(probability - combined_probability, 0.0))}",
     )
@@ -1195,7 +1194,7 @@ with tab_triagem:
     analysis_left, analysis_right = st.columns([1.05, 0.95], gap="large")
 
     with analysis_left:
-        st.markdown("#### Prioridades de intervencao")
+        st.markdown("#### Prioridades de intervenção")
         priority_display = priority_df.copy()
         for column in ["Valor atual", "Mediana da base", "Gap", "Peso"]:
             priority_display[column] = priority_display[column].map(
@@ -1207,18 +1206,18 @@ with tab_triagem:
             hide_index=True,
         )
 
-        st.markdown("#### Recomendacoes acionaveis")
+        st.markdown("#### Recomendações acionáveis")
         for title, description in recommendations:
             render_soft_card(title, description)
 
     with analysis_right:
-        st.markdown("#### Simulacoes de melhoria")
+        st.markdown("#### Simulações de melhoria")
         scenario_display = scenario_df.copy()
         scenario_display["Valor alvo"] = scenario_display["Valor alvo"].map(lambda value: format_decimal(value, 1))
         scenario_display["Risco projetado"] = scenario_display["Risco projetado"].map(lambda value: format_pct(value))
-        scenario_display["Reducao potencial"] = scenario_display["Reducao potencial"].map(lambda value: format_pct(value))
+        scenario_display["Redução potencial"] = scenario_display["Redução potencial"].map(lambda value: format_pct(value))
         st.dataframe(
-            scenario_display[["Indicador", "Valor alvo", "Risco projetado", "Reducao potencial"]],
+            scenario_display[["Indicador", "Valor alvo", "Risco projetado", "Redução potencial"]],
             use_container_width=True,
             hide_index=True,
         )
@@ -1227,7 +1226,7 @@ with tab_triagem:
         if strengths_df.empty:
             render_soft_card(
                 "Sem fortalezas evidentes acima da mediana",
-                "O caso pede foco na reducao dos gaps mais importantes antes de ampliar outras frentes.",
+                "O caso pede foco na redução dos gaps mais importantes antes de ampliar outras frentes.",
             )
         else:
             for _, row in strengths_df.head(3).iterrows():
@@ -1238,24 +1237,24 @@ with tab_triagem:
 
 
 with tab_story:
-    st.subheader("Storytelling analitico da base PEDE")
-    st.caption("Esta aba traduz os principais achados do notebook storytelling para uma leitura executiva.")
+    st.subheader("Contexto analítico da base PEDE")
+    st.caption("Esta aba resume os principais achados da base para apoiar a leitura executiva.")
 
     overview_cols = st.columns(4, gap="medium")
     overview_cols[0].metric(
-        "AUC do modelo no notebook",
+        "AUC do modelo",
         NOTEBOOK_MODEL_STORY["auc"],
-        "referencia de storytelling",
+        "referência analítica",
     )
     overview_cols[1].metric(
         "Recall da classe de risco",
         NOTEBOOK_MODEL_STORY["recall_risco"],
-        "foco em early warning",
+        "foco em alerta precoce",
     )
     overview_cols[2].metric(
         "IAA x IDA",
         format_decimal(self_perception["iaa_ida"], 2),
-        "correlacao muito baixa",
+        "correlação muito baixa",
     )
     overview_cols[3].metric(
         "IAA x IEG",
@@ -1265,7 +1264,7 @@ with tab_story:
 
     chart_left, chart_right = st.columns([1.05, 0.95], gap="large")
     with chart_left:
-        st.markdown("#### Evolucao dos indicadores centrais")
+        st.markdown("#### Evolução dos indicadores centrais")
         trends_fig = plot_year_trends(year_summary)
         st.pyplot(trends_fig, use_container_width=True)
         plt.close(trends_fig)
@@ -1293,34 +1292,34 @@ with tab_story:
     with insight_cols[0]:
         render_soft_card(
             "Defasagem severa cai ano a ano",
-            "A base mostra reducao proporcional continua da defasagem severa e crescimento da fase ideal entre 2022 e 2024.",
+            "A base mostra redução proporcional contínua da defasagem severa e crescimento da fase ideal entre 2022 e 2024.",
         )
     with insight_cols[1]:
         render_soft_card(
             "Engajamento sustenta desempenho",
-            f"O notebook reforca IEG como tracao do aluno. Na base, IEG x IDA = {format_decimal(float(story_df[['ieg', 'ida']].corr(numeric_only=True).iloc[0,1]), 2)}.",
+            f"O IEG aparece como tração do aluno. Na base, IEG x IDA = {format_decimal(float(story_df[['ieg', 'ida']].corr(numeric_only=True).iloc[0,1]), 2)}.",
         )
     with insight_cols[2]:
         render_soft_card(
-            "Autoavaliacao nao explica performance",
+            "Autoavaliação não explica performance",
             f"O aluno tende a se superestimar: IAA x IDA = {format_decimal(self_perception['iaa_ida'], 2)} e IAA x IEG = {format_decimal(self_perception['iaa_ieg'], 2)}.",
         )
 
     second_row = st.columns(3, gap="medium")
     with second_row[0]:
         render_soft_card(
-            "IPS como early warning",
-            "O storytelling interpreta o IPS como radar preditivo. Quando ele cai, cresce a chance de perda de desempenho e engajamento no ciclo seguinte.",
+            "IPS como alerta precoce",
+            "O IPS funciona como radar preditivo. Quando ele cai, cresce a chance de perda de desempenho e engajamento no ciclo seguinte.",
         )
     with second_row[1]:
         render_soft_card(
             "IPP revela potencial latente",
-            "IPP e IAN nao contam a mesma historia. O notebook sugere que o IPP captura capacidade de aprendizagem, mesmo com defasagem formal.",
+            "IPP e IAN não contam a mesma história. O IPP ajuda a capturar capacidade de aprendizagem, mesmo com defasagem formal.",
         )
     with second_row[2]:
         render_soft_card(
-            "Excelencia precisa de base completa",
-            "IDA e IEG puxam o INDE, mas o topo absoluto depende de sustentacao emocional e cognitiva via IPS e IPP.",
+            "Excelência precisa de base completa",
+            "IDA e IEG puxam o INDE, mas o topo absoluto depende de sustentação emocional e cognitiva via IPS e IPP.",
         )
 
     st.markdown("#### Sinal de alerta por faixa de IPS")
@@ -1331,26 +1330,26 @@ with tab_story:
         st.dataframe(early_warning_display, use_container_width=True, hide_index=True)
 
     st.caption(
-        "Narrativa sintetizada a partir de storytelling.ipynb. O app usa a mesma base PEDE, mas separa claramente storytelling analitico e escore operacional."
+        "Leitura sintetizada a partir da base PEDE, combinando contexto analítico e escore operacional."
     )
 
 
 with tab_governanca:
-    st.subheader("Modelo, sinais carregados e comparacao com o notebook")
+    st.subheader("Modelo, sinais e governança")
     st.caption(
-        "Aqui fica explicito o que veio do artefato operacional anexado e o que veio da narrativa do notebook storytelling."
+        "Esta área apresenta os indicadores usados pelo modelo e os cuidados de interpretação para uso pedagógico."
     )
 
     governance_metrics = st.columns(4, gap="medium")
     governance_metrics[0].metric("Modelo carregado", hero_model_name)
-    governance_metrics[1].metric("Features do artefato", str(len(model_features)))
-    governance_metrics[2].metric("Modelo destacado no notebook", NOTEBOOK_MODEL_STORY["modelo_destacado"])
-    governance_metrics[3].metric("Tradeoff analitico", NOTEBOOK_MODEL_STORY["tradeoff"])
+    governance_metrics[1].metric("Indicadores usados", str(len(model_features)))
+    governance_metrics[2].metric("Referência analítica", NOTEBOOK_MODEL_STORY["modelo_destacado"])
+    governance_metrics[3].metric("Tradeoff analítico", NOTEBOOK_MODEL_STORY["tradeoff"])
 
     governance_left, governance_right = st.columns([1.0, 1.0], gap="large")
 
     with governance_left:
-        st.markdown("#### Peso relativo dos indicadores no artefato carregado")
+        st.markdown("#### Peso relativo dos indicadores")
         signal_fig = plot_model_signal(signal_weights)
         st.pyplot(signal_fig, use_container_width=True)
         plt.close(signal_fig)
@@ -1361,7 +1360,7 @@ with tab_governanca:
         st.dataframe(signal_table, use_container_width=True, hide_index=True)
 
     with governance_right:
-        st.markdown("#### Dicionario operacional")
+        st.markdown("#### Dicionário operacional")
         dictionary_rows = []
         for feature in model_features:
             meta = FEATURE_META.get(feature, {})
@@ -1369,36 +1368,24 @@ with tab_governanca:
                 {
                     "Indicador": feature_label(feature),
                     "Leitura": meta.get("reading", "Indicador operacional do modelo."),
-                    "Acao sugerida": meta.get("action", "Acompanhar o caso com a equipe."),
+                    "Ação sugerida": meta.get("action", "Acompanhar o caso com a equipe."),
                 }
             )
         st.dataframe(pd.DataFrame(dictionary_rows), use_container_width=True, hide_index=True)
 
-    compare_cols = st.columns(3, gap="medium")
-    with compare_cols[0]:
+    guidance_cols = st.columns(3, gap="medium")
+    with guidance_cols[0]:
         render_soft_card(
-            "O que o notebook prioriza",
-            "A narrativa do storytelling escolhe um modelo mais sensivel a risco futuro, mesmo abrindo mao de parte da acuracia total.",
+            "Foco do modelo",
+            "A leitura prioriza alerta precoce e cobertura dos casos em risco, apoiando decisões de acompanhamento pedagógico.",
         )
-    with compare_cols[1]:
+    with guidance_cols[1]:
         render_soft_card(
-            "O que o artefato operacional entrega",
-            f"O app respeita o modelo anexado em `{MODEL_PATH.name}` e monta o formulario exatamente com as features salvas em `{FEATURES_PATH.name}`.",
+            "Uso recomendado",
+            "Use o escore para ordenar prioridades, discutir planos de ação e acompanhar evolução dos indicadores.",
         )
-    with compare_cols[2]:
+    with guidance_cols[2]:
         render_soft_card(
-            "Como comparar com o app atual",
-            "Use esta versao para avaliar se a narrativa de negocio ficou mais alinhada ao storytelling sem alterar o app principal ja existente.",
+            "Limite de interpretação",
+            "O resultado apoia a decisão pedagógica, mas deve ser combinado com histórico, escuta e avaliação humana.",
         )
-
-    st.markdown("#### Caminhos dos anexos utilizados")
-    st.code(
-        "\n".join(
-            [
-                str(WORKBOOK_PATH),
-                str(MODEL_PATH),
-                str(FEATURES_PATH),
-            ]
-        ),
-        language="text",
-    )
